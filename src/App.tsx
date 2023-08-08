@@ -1,11 +1,12 @@
 import React from 'react';
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.css';
 // import { ProjectList } from 'screens/ProjectList';
 // import { Login } from 'screens/Login';
 import { AuthenticatedApp } from 'authenticated-app';
 import { useAuth } from 'context/auth-context';
 import { UnauthenticatedApp } from 'unautthenticated-app';
+
 // import { Login } from 'unautthenticated-app/login';
 function App() {
   const { user } = useAuth()

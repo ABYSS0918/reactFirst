@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
+import { Form, Input, Select } from "antd";
+
+/** @jsxImportSource @emotion/react */
 export interface User {
     id: string;
     name: string;
     email: string;
     title: string;
     organization: string;
-    token:string;
+    token: string;
 }
 
 interface SearchPanelProps {
@@ -35,23 +38,39 @@ export const SearchPanel = (
     //     })
     // }, [param])
 
-    return (<form>
-        <div>
-            <input type="text" value={param.name} onChange={evt => setParam({
-                ...param,
-                name: evt.target.value
-            })} />
-            <select value={param.personId} onChange={evt => setParam({
-                ...param,
-                personId: evt.target.value
-            })}>
-                <option value=""> 负责人</option>
-                {
-                    users.map(user => (<option key={user.id} value={user.id}>{user.name}</option>))
-                }
+    return (
+        <Form layout="inline">
+            <Form.Item>
+                <Input
+                    type="text"
+                    value={param.name}
+                    onChange={(evt) =>
+                        setParam({
+                            ...param,
+                            name: evt.target.value,
+                        })
+                    }
+                />
+            </Form.Item>
+            <Form.Item>
+                <Select
+                    value={param.personId}
+                    onChange={value =>
+                        setParam({
+                            ...param,
+                            personId: value,
+                        })
+                    }
+                >
+                    <Select.Option value="">负责人</Select.Option>
+                    {users.map((user) => (
+                        <Select.Option key={user.id} value={user.id}>
+                            {user.name}
+                        </Select.Option>
+                    ))}
+                </Select>
+            </Form.Item>
+        </Form>
 
-            </select>
-        </div>
-
-    </form>)
+    )
 }
