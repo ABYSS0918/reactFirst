@@ -1,32 +1,36 @@
 import { useState } from "react";
 import { Login } from "./login";
 import { Register } from "./register";
-import { Card, Button, Divider } from 'antd';
+import { Card, Button, Divider, Typography } from 'antd';
 import styled from "@emotion/styled"
 import left from 'assets/left.png'
 import logo from 'assets/logo.png'
 import right from 'assets/right.png'
 
 export const UnauthenticatedApp = () => {
-    const [isRegister, setIsRegister] = useState(false);
-    return (
-        <Container>
-            <Header />
-            <Background />
-            <ShadowCard>
-                <Title>
-                    {isRegister ? '请注册' : '请登录'}
-                </Title>
-                {isRegister ? <Register /> : <Login />}
-                <Divider />
-                <Button type="link" onClick={() => setIsRegister(!isRegister)}>
-                    {isRegister ? "已经有账号了？直接登录" : "没有账号？注册新账号"}
-                </Button>
-            </ShadowCard>
-        </Container>
+  const [isRegister, setIsRegister] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
 
-
-    )
+  return (
+    <Container>
+      <Header />
+      <Background />
+      <Button onClick={() => {
+        throw new Error('点击抛出一个异常')
+      }}>抛出异常</Button>
+      <ShadowCard>
+        <Title>
+          {isRegister ? '请注册' : '请登录'}
+        </Title>
+        {error ? <Typography.Text type="danger">{error.message}</Typography.Text> : null}
+        {isRegister ? <Register onError={setError} /> : <Login onError={setError} />}
+        <Divider />
+        <Button type="link" onClick={() => { setIsRegister(!isRegister); setError(null) }}>
+          {isRegister ? "已经有账号了？直接登录" : "没有账号？注册新账号"}
+        </Button>
+      </ShadowCard>
+    </Container>
+  )
 };
 
 const Container = styled.div`

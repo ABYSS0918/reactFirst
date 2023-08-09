@@ -13,12 +13,14 @@ export const AuthenticatedApp = () => {
         key: 1,
         label: '登出',
         onClick: logout
-    }]
+    }];
+    const value: any = undefined;
     return (
         <Container>
+            {value.notExist}
             <Header butween={true}>
                 <HeaderLeft gap={true}>
-                    {/* <SoftwareLogo width='18rem' color='rgb(38,132,255)' /> */}
+                    {/* <SoftwareLogo width='18rem' color='rgb(38,132,255)' />  */}
                     <BackgroundImg />
                     <h2>项目</h2>
                     <h2>用户</h2>

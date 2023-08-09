@@ -1,5 +1,6 @@
 import { Form, Button, Input } from "antd";
 import { useAuth } from "context/auth-context";
+import { useAsync } from "utils/use-async";
 import styled from "@emotion/styled";
 import { FormEvent } from "react";
 
@@ -7,8 +8,9 @@ import { FormEvent } from "react";
 // const apiUrl = process.env.REACT_APP_API_URL;
 
 
-export const Login = () => {
+export const Login = ({ onError }: { onError: (error: Error) => void }) => {
     const { login, user } = useAuth();
+    const { run, isLoading } = useAsync(undefined, { throwOnError: true });
 
     // const login = (param: { username: string; password: string }) => {
     //     fetch(`${apiUrl}/login`, {
@@ -31,8 +33,13 @@ export const Login = () => {
     //     const password = (event.currentTarget.elements[1] as HTMLFormElement).value;
     //     login({ username, password });
     // };
-    const handleSubmit = (values: { username: string, password: string }) => {
-        login(values);
+    const handleSubmit = async (values: { username: string, password: string }) => {
+        try {
+            // login(values).catch(e => onError(e));
+            await run(login(values))
+        } catch (e: Error | any) {
+            onError(e)
+        }
     }
     return (
 
@@ -43,12 +50,11 @@ export const Login = () => {
             <Form.Item name='password' rules={[{ required: true, message: '请输入密码' }]}>
                 <Input placeholder="密码" type="password" id="password" />
             </Form.Item>
-            <Form.Item>
 
-                <LongButton htmlType="submit" type="primary">
+            <Form.Item>
+                <LongButton loading={isLoading} htmlType="submit" type="primary">
                     登录
                 </LongButton>
-
             </Form.Item>
 
         </Form>
